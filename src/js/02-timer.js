@@ -14,13 +14,17 @@ const options = {
     onClose(selectedDates){
         if(selectedDates[0] < Date.now()){
             alert("Please choose a date in the future");
+            btnEL.disabled = true;
           return; 
         }
         btnEL.disabled = false;
         selectedDate = selectedDates[0];
     },
    
-  };
+};
+  function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+};
 const daysEl = document.querySelector("[data-days]")
 const hoursEl = document.querySelector("[data-hours]")
 const minutesEl = document.querySelector("[data-minutes]")
@@ -43,18 +47,15 @@ function convertMs(ms) {
   const minutes = Math.floor(((ms % day) % hour) / minute);
   // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-  daysEl.textContent = days < 10 ? `${days}` : days;
-  hoursEl.textContent = hours < 10 ? `${hours}` : hours;
-  minutesEl.textContent = minutes < 10 ? `${minutes}` : minutes;
-  secondsEl.textContent = seconds < 10 ? `${seconds}` : seconds;
+  daysEl.textContent = addLeadingZero(days);
+  hoursEl.textContent = addLeadingZero(hours);
+  minutesEl.textContent = addLeadingZero(minutes);
+  secondsEl.textContent = addLeadingZero(seconds);
       
 
   return { days, hours, minutes, seconds };
 }
 
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 btnEL.addEventListener("click", start)
   function start(){
     const refreshIntervalId = setInterval(() => {
